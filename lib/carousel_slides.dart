@@ -19,14 +19,20 @@ enum SlideTransitionStyle {
 }
 
 class CarouselSlides extends StatefulWidget {
-  const CarouselSlides({
+  CarouselSlides({
     Key? key,
     required this.slides,
     required this.height,
     this.indicatorColor = Colors.white,
+    this.hideIndicator = false,
     this.textStyle,
     this.indicatorPosition = SlideIndicatorPosition.right,
-  }) : super(key: key);
+  })  : assert(slides.isNotEmpty),
+        super(key: key);
+
+  ///
+  /// whether the carousels indicator should be visible or not
+  final bool hideIndicator;
 
   ///
   /// this is the main color of the indicators
@@ -67,17 +73,33 @@ class CarouselSlides extends StatefulWidget {
   State<CarouselSlides> createState() => _CarouselSlidesState();
 }
 
-class _CarouselSlidesState extends State<CarouselSlides> {
+class _CarouselSlidesState extends State<CarouselSlides>
+    with SingleTickerProviderStateMixin {
   late PageController pageController;
 
+  late AnimationController animationController;
+
   int currentPage = 0;
+  double pageOffset = 0;
 
   @override
   void initState() {
     super.initState();
-    // precac
 
-    pageController = PageController(initialPage: 0);
+    animationController = AnimationController(
+        duration: const Duration(milliseconds: 500), vsync: this);
+
+    pageController = PageController(initialPage: 0)
+      ..addListener(() {
+        pageOffset = pageController.page!;
+      });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    animationController.dispose();
+    pageController.dispose();
   }
 
   @override
@@ -89,35 +111,52 @@ class _CarouselSlidesState extends State<CarouselSlides> {
             PageView(
               key: const Key("value"),
               controller: pageController,
-              children: widget.slides
-                  .map(
-                    (e) => e..textStyle = widget.appTextStyle,
-                  )
-                  .toList(),
+              children: widget.slides.map(
+                (carouselSlide) {
+                  print("SLIDE INDEX $currentPage");
+                  /*if (currentPage == pageOffset.floor()) {
+                    // print("FROM PAGE ${pageOffset}\n");
+                    return carouselSlide
+                      ..transformAngle = pageOffset - currentPage;
+                  } else if (currentPage == pageOffset.floor() + 1) {
+                    // print("TO PAGE ${pageOffset}\n");
+
+                    return carouselSlide
+                      ..transformAngle = pageOffset - currentPage
+                      ..transformScale = .8;
+                  }*/
+                  return carouselSlide
+                    // ..transformAngle = 0
+                    ..textStyle = widget.appTextStyle;
+                },
+              ).toList(),
               onPageChanged: (index) {
                 setState(() {
                   currentPage = index;
                 });
               },
             ),
-            Positioned(
-              bottom: 18,
-              right: widget.indicatorPosition == SlideIndicatorPosition.right
-                  ? 14
-                  : null,
-              left: widget.indicatorPosition == SlideIndicatorPosition.left
-                  ? 14
-                  : null,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: List.generate(widget.slides.length, (_) => (_))
-                    .map(
-                      (e) => CarouselSlideIndicator(
-                        currentPage: currentPage == e,
-                        color: widget.indicatorColor,
-                      ),
-                    )
-                    .toList(),
+            Visibility(
+              visible: !widget.hideIndicator,
+              child: Positioned(
+                bottom: 18,
+                right: widget.indicatorPosition == SlideIndicatorPosition.right
+                    ? 14
+                    : null,
+                left: widget.indicatorPosition == SlideIndicatorPosition.left
+                    ? 14
+                    : null,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: List.generate(widget.slides.length, (_) => (_))
+                      .map(
+                        (e) => CarouselSlideIndicator(
+                          currentPage: currentPage == e,
+                          color: widget.indicatorColor,
+                        ),
+                      )
+                      .toList(),
+                ),
               ),
             ),
           ],

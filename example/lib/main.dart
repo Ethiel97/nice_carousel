@@ -27,22 +27,22 @@ class MyApp extends StatelessWidget {
                 CarouselSlide(
                   title: '80% off',
                   description: 'Free\ndiscount'.toUpperCase(),
-                  imageAsset: 'assets/img/1.jpg',
+                  imageAsset: 'assets/img/1.webp',
                 ),
                 CarouselSlide(
                   title: '60% off',
                   description: 'Buy\nonline now'.toUpperCase(),
-                  imageAsset: 'assets/img/2.jpg',
+                  imageAsset: 'assets/img/2.webp',
                 ),
                 CarouselSlide(
                   title: '50% off',
                   description: 'Grab\ndeals now'.toUpperCase(),
-                  imageAsset: 'assets/img/3.jpg',
+                  imageAsset: 'assets/img/3.webp',
                 ),
                 CarouselSlide(
                   title: '20% off',
                   description: 'Shop\nonline now'.toUpperCase(),
-                  imageAsset: 'assets/img/4.jpg',
+                  imageAsset: 'assets/img/4.webp',
                 ),
               ],
               height: 300,

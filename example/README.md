@@ -1,16 +1,64 @@
-# custom_carousel_flutter
+# A complete Example
 
-A new Flutter project.
+Usage of the `nice_carousel` package.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+```dart
 
-A few resources to get you started if this is your first Flutter project:
+import 'package:flutter/material.dart';
+import 'package:nice_carousel/carousel_slide.dart';
+import 'package:nice_carousel/carousel_slides.dart';
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+void main() {
+  runApp(const MyApp());
+}
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      color: Colors.white,
+      title: 'Custom Carousel',
+      home: Scaffold(
+        body: ListView(
+          children: [
+            const SizedBox(
+              height: 200,
+            ),
+            CarouselSlides(
+              indicatorPosition: SlideIndicatorPosition.right,
+              slides: [
+                CarouselSlide(
+                  title: '80% off',
+                  description: 'Free\ndiscount'.toUpperCase(),
+                  imageAsset: 'assets/img/1.webp',
+                ),
+                CarouselSlide(
+                  title: '60% off',
+                  description: 'Buy\nonline now'.toUpperCase(),
+                  imageAsset: 'assets/img/2.webp',
+                ),
+                CarouselSlide(
+                  title: '50% off',
+                  description: 'Grab\ndeals now'.toUpperCase(),
+                  imageAsset: 'assets/img/3.webp',
+                ),
+                CarouselSlide(
+                  title: '20% off',
+                  description: 'Shop\nonline now'.toUpperCase(),
+                  imageAsset: 'assets/img/4.webp',
+                ),
+              ],
+              height: 300,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+```

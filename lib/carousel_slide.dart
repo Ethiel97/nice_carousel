@@ -29,6 +29,12 @@ class CarouselSlide extends StatefulWidget {
   ///[TextStyle]
   TextStyle? textStyle;
 
+  ///[double]
+  double? _transformAngle;
+
+  ///[int]
+  double? _transformScale;
+
   ///
   /// use this constructor if your image asset is provided from your assets directory
   ///
@@ -179,10 +185,13 @@ class _CarouselSlideState extends State<CarouselSlide> {
       );
 
   @override
-  Widget build(BuildContext context) => AnimatedContainer(
-        duration: const Duration(
-          milliseconds: 250,
-        ),
+  Widget build(BuildContext context) => Transform(
+        transform: /*(widget.transformAngle == 0 || widget.transformAngle == null)
+            ? Matrix4.identity()
+            : */
+            Matrix4.identity()
+              ..setEntry(3, 2, .001)
+              ..rotateY(widget._transformAngle ?? 0),
         child: content,
       );
 }
